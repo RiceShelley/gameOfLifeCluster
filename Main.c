@@ -25,8 +25,8 @@
 #include <errno.h>
 
 // Board dimentions
-int gridW = 15;
-int gridH = 8;
+int gridW = 5;
+int gridH = 5;
 
 // 2d array of chars for holding game of life board
 char** grid;
@@ -57,11 +57,18 @@ void writeMatrix(char* newMatrix)
 */
 char** allocateMatrix(int width, int height)
 { 
-	char** grid = calloc(height, sizeof(char*)); 
-	for (int i = 0; i < height; i++) {
-		grid[i] = calloc(width, sizeof(char));
+	char** grid = calloc((height + 1), sizeof(char*)); 
+	for (int i = 0; i < (height + 1); i++) {
+		grid[i] = calloc((width + 1), sizeof(char));
 	}
 	return grid;
+}
+
+void deallocateMatrix(char** matrix, int height) {
+    for (int i = 0; i < (height + 1); i++) {
+        free(matrix[i]);
+    }
+    free(matrix);
 }
 
 char* getMatrixRim()
@@ -143,9 +150,9 @@ int testCell(int row, int col, char **tempGrid)
 	// do neighbour count
 	if (tempGrid[row][col] == '#') {
 		if ((col == 2 && (row > 1 && row < gridH - 2)) || 
-		(col == gridW - 4 && (row > 1 && row < gridH)) ||
+		(col == gridW - 3 && (row > 1 && row < gridH)) ||
 		(row == 2 && (col > 1 && col < gridW - 2)) || 
-		(row == gridH - 4 && (col > 1 && col < gridW - 2))) {
+		(row == gridH - 3 && (col > 1 && col < gridW - 2))) {
 			/* 
 			* do check for undefined data character
 			* undefined data could effect the sim if a life cell nears it 
@@ -399,7 +406,7 @@ void procControl()
 	connect(sockfd, (struct sockaddr*)&serv_def, sizeof(serv_def));
 	char fromS[1000 * 10];
 	int fromSLn = (sizeof(fromS) / sizeof(char));
-	memset(fromS, 0, fromSLn);
+	memset(fromS, '\0', fromSLn);
 	while(true) 
 	{
 		
@@ -419,6 +426,25 @@ void procControl()
 			writeMatrix(dataSet);
 			send(sockfd, "SYNC_DONE\0", 10, 0);
 		}
+        // Server is resizing matrix
+        else if (stncmp(fromS, "SET_DIMEN:", 10) == 0) {
+            // Free mem from old grids 
+            deallocateMatrix(grid, gridH);
+            deallocateMatrix(tempGrid, gridH);
+			// Parse dimentions of grid
+            char* dimen = &fromS[10]; 
+			char cY[5];
+			memset(cY, 0, 5);
+			strncpy(cY, (const char*)dimen, (strlen(dimen) - strlen(strchr(dimen, '/'))));
+			char* cX = &strchr(dimen, '/')[1];
+			gridH = atoi(cY);
+			gridW = atoi(cX);
+            printf("new dimen h = %d, w = %d", gridH, gridW);
+            // Create new grids with new dimensions
+            grid = allocateMatrix(gridW, gridH);
+            tempGrid = allocateMatrix(gridW, gridH);
+            clearGrid();
+        }
 		/*
 		 * server has reqested the matrix this node has
 		 * been processing!!!
