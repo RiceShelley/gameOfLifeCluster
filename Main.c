@@ -25,8 +25,8 @@
 #include <errno.h>
 
 // Board dimentions
-const int gridW = 15;
-cont int gridH = 8;
+int gridW = 15;
+int gridH = 8;
 
 // 2d array of chars for holding game of life board
 char** grid;
@@ -138,6 +138,7 @@ void print2dArray(char **grid, int rows, int cols)
 int testCell(int row, int col, char **tempGrid)
 {
     printf("row = %i col = %i\n", row, col);
+    printf("gridW = %i gridH = %i\n", gridW, gridH);
     printf("seg\n");
 	// do neighbour count
 	if (tempGrid[row][col] == '#') {
