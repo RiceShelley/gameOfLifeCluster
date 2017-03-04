@@ -57,9 +57,9 @@ void writeMatrix(char* newMatrix)
 */
 char** allocateMatrix(int width, int height)
 { 
-	char** grid = calloc(height + 1, sizeof(char*)); 
-	for (int i = 0; i < height + 1; i++) {
-		grid[i] = calloc(width + 1, sizeof(char));
+	char** grid = calloc(height, sizeof(char*)); 
+	for (int i = 0; i < height; i++) {
+		grid[i] = calloc(width, sizeof(char));
 	}
 	return grid;
 }
@@ -143,9 +143,9 @@ int testCell(int row, int col, char **tempGrid)
 	// do neighbour count
 	if (tempGrid[row][col] == '#') {
 		if ((col == 2 && (row > 1 && row < gridH - 2)) || 
-		(col == gridW - 3 && (row > 1 && row < gridH)) ||
+		(col == gridW - 4 && (row > 1 && row < gridH)) ||
 		(row == 2 && (col > 1 && col < gridW - 2)) || 
-		(row == gridH - 3 && (col > 1 && col < gridW - 2))) {
+		(row == gridH - 4 && (col > 1 && col < gridW - 2))) {
 			/* 
 			* do check for undefined data character
 			* undefined data could effect the sim if a life cell nears it 
