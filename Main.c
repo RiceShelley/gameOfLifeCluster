@@ -57,9 +57,9 @@ void writeMatrix(char* newMatrix)
 */
 char** allocateMatrix(int width, int height)
 { 
-	char** grid = calloc(width, sizeof(char*)); 
+	char** grid = calloc(width + 1, sizeof(char*)); 
 	for (int i = 0; i < width; i++) {
-		grid[i] = calloc(height, sizeof(char));
+		grid[i] = calloc(height + 1, sizeof(char));
 	}
 	return grid;
 }
