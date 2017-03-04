@@ -29,8 +29,8 @@ int gridW = 15;
 int gridH = 8;
 
 // 2d array of chars for holding game of life board
-char grid[gridH][gridW]; 
-char tempGrid[gridH][gridW];
+char** grid;
+char** tempGrid;
 
 // flag requesting server matrix resize
 bool resizeReq = false;
@@ -49,6 +49,19 @@ void writeMatrix(char* newMatrix)
 			i++;
 		}
 	}	
+}
+
+/* 
+*   Returns 2d character array givin a width and height 
+*   array is loaded onto the heap MUST BE MANUALLY DELETED
+*/
+char** allocateMatrix(int width, int height)
+{ 
+	char** grid = calloc(width, sizeof(char*)); 
+	for (int i = 0; i < width; i++) {
+		grid[i] = calloc(height, sizeof(char));
+	}
+	return grid;
 }
 
 char* getMatrixRim()
@@ -110,7 +123,7 @@ void printGrid()
 	}
 }
 
-void print2dArray(char grid[gridH][gridW], int rows, int cols) 
+void print2dArray(char **grid, int rows, int cols) 
 {
 	for (int row = 0; row < rows; row++)
 	{
@@ -122,7 +135,7 @@ void print2dArray(char grid[gridH][gridW], int rows, int cols)
 	}
 }
 
-int testCell(int row, int col, char tempGrid[gridH][gridW])
+int testCell(int row, int col, char **tempGrid)
 {
 	// do neighbour count
 	if (tempGrid[row][col] == '#') {
@@ -443,6 +456,8 @@ void procControl()
 
 int main() 
 {
+    grid = allocateMatrix(gridH, gridW);
+    tempGrid = allocateMatrix(gridH, gridW);
 	// Init grid by clearing
 	clearGrid();	
 	// Start process loop
