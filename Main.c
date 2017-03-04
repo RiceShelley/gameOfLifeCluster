@@ -137,6 +137,8 @@ void print2dArray(char **grid, int rows, int cols)
 
 int testCell(int row, int col, char **tempGrid)
 {
+    printf("row = %i col = %i\n", row, col);
+    printf("seg\n");
 	// do neighbour count
 	if (tempGrid[row][col] == '#') {
 		if ((col == 2 && (row > 1 && row < gridH - 2)) || 
@@ -194,6 +196,7 @@ int testCell(int row, int col, char **tempGrid)
 		neighbours++;
 	if (tempGrid[row + 1][col] == '#')
 		neighbours++;
+    printf("fault\n");
 	return neighbours;
 }
 
