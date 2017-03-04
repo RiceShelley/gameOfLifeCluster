@@ -467,8 +467,8 @@ void procControl()
 
 int main() 
 {
-    grid = allocateMatrix(gridH, gridW);
-    tempGrid = allocateMatrix(gridH, gridW);
+    grid = allocateMatrix(gridW + 2, gridH + 2);
+    tempGrid = allocateMatrix(gridW + 2, gridH + 2);
 	// Init grid by clearing
 	clearGrid();	
 	// Start process loop
