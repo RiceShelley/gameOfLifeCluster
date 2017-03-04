@@ -25,8 +25,8 @@
 #include <errno.h>
 
 // Board dimentions
-int gridW = 15;
-int gridH = 8;
+const int gridW = 15;
+cont int gridH = 8;
 
 // 2d array of chars for holding game of life board
 char** grid;
