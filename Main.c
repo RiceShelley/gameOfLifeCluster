@@ -179,7 +179,7 @@ int testCell(int row, int col, char **tempGrid)
 			}
 		}
 	}
-
+    printf("fault\n");
 	int neighbours = 0;
 	if (tempGrid[row + 1][col - 1] == '#') 
 		neighbours++;
