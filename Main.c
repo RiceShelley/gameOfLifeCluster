@@ -427,7 +427,7 @@ void procControl()
 			send(sockfd, "SYNC_DONE\0", 10, 0);
 		}
         // Server is resizing matrix
-        else if (stncmp(fromS, "SET_DIMEN:", 10) == 0) {
+        else if (strncmp(fromS, "SET_DIMEN:", 10) == 0) {
             // Free mem from old grids 
             deallocateMatrix(grid, gridH);
             deallocateMatrix(tempGrid, gridH);
