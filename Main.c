@@ -221,6 +221,8 @@ void step()
 	char rim1_1[(gridW * 2) + (gridH * 2)];
 	char rim1_N1[(gridW * 2) + (gridH * 2)];
 
+    printf("before seg\n");
+
 	// copy curent board into temp array
 	for (int row = 0; row < gridH; row++)
 	{
@@ -337,6 +339,8 @@ void step()
 		grid[gridH - 1][0] = rim1_N1[13];
 	}	
 
+    printf("before seg0\n");
+
 	print2dArray(grid, gridH, gridW);
 
 	// nt3dA logic to grid
@@ -358,6 +362,9 @@ void step()
 			}
 		}
 	}
+
+    printf("before seg1\n");    
+
 	// set grid to contents of tempGrid
 	for (int row = 0; row < gridH; row++)
 	{
