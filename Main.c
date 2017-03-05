@@ -398,7 +398,7 @@ void procControl()
 	memset(fromS, '\0', fromSLn);
 	while(true) 
 	{
-	    system("cls");
+	    system("clear");
 		memset(fromS, '\0', fromSLn);
 		recv(sockfd, fromS, fromSLn, 0);
 		// Server requested node to run next step of the simulation
