@@ -205,18 +205,6 @@ int testCell(int row, int col, char **tempGrid)
 
 void step()
 {
-	// flags for identifing if certain parts of other matrixes are required for this matrixs computation
-	// edges
-	bool hasRight = true;
-	bool hasLeft = true;
-	bool hasTop = true;
-	bool hasBot = true;
-	// corners
-	bool hasTopLeft = true;
-	bool hasTopRight = true;
-	bool hasBotLeft = true;
-	bool hasBotRight = true;
-
 	// init temp grid to equal current grid
 	char rimN1_Z[(gridW * 2) + (gridH * 2)];
 	char rim1_Z[(gridW * 2) + (gridH * 2)];
@@ -233,115 +221,83 @@ void step()
 		for (int col = 0; col < gridW; col++)
 		{
 			tempGrid[row][col] = grid[row][col];
-			/* check if grid is going to need data from other rims toDo make this work
-			if (tempGrid[row][col] == '#') {
-				if (row == 1 && col == 1) {
-					hasTopLeft = true;
-				} else if (row == 1 && col == gridW - 2) {
-					hasTopRight = true;
-				} else if (row == gridH - 2 && col == 1) {
-					hasBotLeft = true;
-				} else if (row == gridH - 2 && col == gridW - 2){
-					hasBotRight = true;
-				} else if (row == 1) {
-					hasTop = true;
-				} else if (row == gridH - 2) {
-					hasBot = true;	
-				} else if (col == 1) {
-					hasLeft = true;
-				} else if (col == gridW -1) {
-					hasRight = true;
-				}
-			}*/
 		}
-	}
-	if (hasTop) {
-		// get rim of matrix above this one
-		send(sockfd, "GETRIMOF:-1/0\0", (sizeof("GETRIMOF:-1/0\0") / sizeof(char)), 0);
-		memset(rimN1_Z, 0, (sizeof(rimN1_Z) / sizeof(char)));
-		recv(sockfd, rimN1_Z, (sizeof(rimN1_Z) / sizeof(char)), 0);
-		char bottomRow[gridW];
-		memset(bottomRow, 0, gridW);
-		strcpy(rimN1_Z, (const char*) &rimN1_Z[gridW]);
-		strncpy(bottomRow, rimN1_Z, gridW);
-		for (int i = 0; i < gridW; i++)
-		{
-			grid[0][i] = bottomRow[i];
-		}
-	}
-	if (hasBot) {
-		// get rim of matrix bellow this one
-		send(sockfd, "GETRIMOF:1/0\0", (sizeof("GETRIMOF:1/0\0") / sizeof(char)), 0);
-		memset(rim1_Z, 0, (sizeof(rim1_Z) / sizeof(char)));
-		recv(sockfd, rim1_Z, (sizeof(rim1_Z) / sizeof(char)), 0);
-		char topRow[gridW];
-		memset(topRow, 0, gridW);
-		strncpy(topRow, rim1_Z, gridW);
-		for (int i = 0; i < gridW; i++)
-		{
-			grid[gridH - 1][i] = topRow[i];
-		}
-	}
-	if (hasLeft) {
-		// get rim of matrix to the left of this one
-		send(sockfd, "GETRIMOF:0/-1\0", (sizeof("GETRIMOF:0/-1\0") / sizeof(char)), 0);
-		memset(rimZ_N1, 0, (sizeof(rimZ_N1) / sizeof(char)));
-		recv(sockfd, rimZ_N1, (sizeof(rimZ_N1) / sizeof(char)), 0);
-		char rightRow[gridH];
-		memset(rightRow, 0, gridH);
-		strcpy(rimZ_N1, (const char*) &rimZ_N1[((gridW * 2) + gridH)]);
-		strcpy(rightRow, rimZ_N1);
-		for (int i = 0; i < gridH; i++)
-		{
-			grid[i][0] = rightRow[i];
-		}
-	}
-	if (hasRight) {
-		// get rim of matrix to the right of this one
-		send(sockfd, "GETRIMOF:0/1\0", (sizeof("GETRIMOF:0/1\0") / sizeof(char)), 0);
-		memset(rimZ_1, 0, (sizeof(rimZ_1) / sizeof(char)));
-		recv(sockfd, rimZ_1, (sizeof(rimZ_1) / sizeof(char)), 0);
-		char leftRow[gridH];
-		memset(leftRow, 0, gridH);
-		strncpy(leftRow, (const char*) &rimZ_1[(gridW * 2)], gridH);
-		for (int i = 0; i < gridH; i++) 
-		{
-			grid[i][gridW - 1] = leftRow[i];
-		} 
-	}
+    }
+    // get rim of matrix above this one
+    send(sockfd, "GETRIMOF:-1/0\0", (sizeof("GETRIMOF:-1/0\0") / sizeof(char)), 0);
+    memset(rimN1_Z, 0, (sizeof(rimN1_Z) / sizeof(char)));
+    recv(sockfd, rimN1_Z, (sizeof(rimN1_Z) / sizeof(char)), 0);
+    char bottomRow[gridW];
+    memset(bottomRow, 0, gridW);
+    strcpy(rimN1_Z, (const char*) &rimN1_Z[gridW]);
+    strncpy(bottomRow, rimN1_Z, gridW);
+    for (int i = 0; i < gridW; i++)
+    {
+        grid[0][i] = bottomRow[i];
+    }
+    // get rim of matrix bellow this one
+    send(sockfd, "GETRIMOF:1/0\0", (sizeof("GETRIMOF:1/0\0") / sizeof(char)), 0);
+    memset(rim1_Z, 0, (sizeof(rim1_Z) / sizeof(char)));
+    recv(sockfd, rim1_Z, (sizeof(rim1_Z) / sizeof(char)), 0);
+    char topRow[gridW];
+    memset(topRow, 0, gridW);
+    strncpy(topRow, rim1_Z, gridW);
+    for (int i = 0; i < gridW; i++)
+    {
+        grid[gridH - 1][i] = topRow[i];
+    }
+    // get rim of matrix to the left of this one
+    send(sockfd, "GETRIMOF:0/-1\0", (sizeof("GETRIMOF:0/-1\0") / sizeof(char)), 0);
+    memset(rimZ_N1, 0, (sizeof(rimZ_N1) / sizeof(char)));
+    recv(sockfd, rimZ_N1, (sizeof(rimZ_N1) / sizeof(char)), 0);
+    char rightRow[gridH];
+    memset(rightRow, 0, gridH);
+    strcpy(rimZ_N1, (const char*) &rimZ_N1[((gridW * 2) + gridH)]);
+    strcpy(rightRow, rimZ_N1);
+    for (int i = 0; i < gridH; i++)
+    {
+        grid[i][0] = rightRow[i];
+    }
+	// get rim of matrix to the right of this one
+    send(sockfd, "GETRIMOF:0/1\0", (sizeof("GETRIMOF:0/1\0") / sizeof(char)), 0);
+    memset(rimZ_1, 0, (sizeof(rimZ_1) / sizeof(char)));
+    recv(sockfd, rimZ_1, (sizeof(rimZ_1) / sizeof(char)), 0);
+    char leftRow[gridH];
+    memset(leftRow, 0, gridH);
+    strncpy(leftRow, (const char*) &rimZ_1[(gridW * 2)], gridH);
+    for (int i = 0; i < gridH; i++) 
+    {
+        grid[i][gridW - 1] = leftRow[i];
+    } 
 	// Add edges of surrounding matrices to this one if need be
-	if (hasTopLeft) {
-		// get rim of matrix above and the the left
-		send(sockfd, "GETRIMOF:-1/-1\0", (sizeof("GETRIMOF:-1/-1\0") / sizeof(char)), 0);
-		memset(rimN1_N1, 0, (sizeof(rimN1_N1) / sizeof(char)));
-		recv(sockfd, rimN1_N1, (sizeof(rimN1_N1) / sizeof(char)), 0);
-		// top left corner
-		grid[0][0] = rimN1_N1[28];
-	}
-	if (hasTopRight) {
-		// get rim of matrix above and to the right
-		send(sockfd, "GETRIMOF:-1/1\0", (sizeof("GETRIMOF:-1/1\0") / sizeof(char)), 0);
-		memset(rimN1_1, 0, (sizeof(rimN1_1) / sizeof(char)));
-		recv(sockfd, rimN1_1, (sizeof(rimN1_1) / sizeof(char)), 0);
-		// top right corner
-		grid[0][gridW - 1] = rimN1_1[16];
-	}
-	if (hasBotRight) {
-		// get rim of matrix bellow and to the right
-		send(sockfd, "GETRIMOF:1/1\0", (sizeof("GETRIMOF:1/1\0") / sizeof(char)), 0);
-		memset(rim1_1, 0, (sizeof(rim1_1) / sizeof(char)));
-		recv(sockfd, rim1_1, (sizeof(rim1_1) / sizeof(char)), 0);
-		// bot right corner
-		grid[gridH - 1][gridW - 1] = rim1_1[1];
-	}
-	if (hasBotLeft) {
-		// get rim of matrix bellow and to the left
-		send(sockfd, "GETRIMOF:1/-1\0", (sizeof("GETRIMOF:1/-1\0") / sizeof(char)), 1);
-		memset(rim1_N1, 0, (sizeof(rim1_N1) / sizeof(char)));
-		recv(sockfd, rim1_N1, (sizeof(rim1_N1) / sizeof(char)), 0);
-		// bot left corner
-		grid[gridH - 1][0] = rim1_N1[13];
-	}	
+
+    // get rim of matrix above and the the left
+    send(sockfd, "GETRIMOF:-1/-1\0", (sizeof("GETRIMOF:-1/-1\0") / sizeof(char)), 0);
+    memset(rimN1_N1, 0, (sizeof(rimN1_N1) / sizeof(char)));
+    recv(sockfd, rimN1_N1, (sizeof(rimN1_N1) / sizeof(char)), 0);
+    // top left corner
+    grid[0][0] = rimN1_N1[(gridW * 2) - 2];
+
+    // get rim of matrix above and to the right
+    send(sockfd, "GETRIMOF:-1/1\0", (sizeof("GETRIMOF:-1/1\0") / sizeof(char)), 0);
+    memset(rimN1_1, 0, (sizeof(rimN1_1) / sizeof(char)));
+    recv(sockfd, rimN1_1, (sizeof(rimN1_1) / sizeof(char)), 0);
+    // top right corner
+    grid[0][gridW - 1] = rimN1_1[gridW + 1];
+
+    // get rim of matrix bellow and to the right
+    send(sockfd, "GETRIMOF:1/1\0", (sizeof("GETRIMOF:1/1\0") / sizeof(char)), 0);
+    memset(rim1_1, 0, (sizeof(rim1_1) / sizeof(char)));
+    recv(sockfd, rim1_1, (sizeof(rim1_1) / sizeof(char)), 0);
+    // bot right corner
+    grid[gridH - 1][gridW - 1] = rim1_1[1];
+
+	// get rim of matrix bellow and to the left
+    send(sockfd, "GETRIMOF:1/-1\0", (sizeof("GETRIMOF:1/-1\0") / sizeof(char)), 1);
+    memset(rim1_N1, 0, (sizeof(rim1_N1) / sizeof(char)));
+    recv(sockfd, rim1_N1, (sizeof(rim1_N1) / sizeof(char)), 0);
+    // bot left corner
+    grid[gridH - 1][0] = rim1_N1[gridW - 2];
 
 	print2dArray(grid, gridH, gridW);
 
