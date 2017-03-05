@@ -398,7 +398,6 @@ void procControl()
 	memset(fromS, '\0', fromSLn);
 	while(true) 
 	{
-	    system("clear");
 		memset(fromS, '\0', fromSLn);
 		recv(sockfd, fromS, fromSLn, 0);
 		// Server requested node to run next step of the simulation
@@ -410,6 +409,7 @@ void procControl()
 		// Server has sent node a new matrix
 		else if (strncmp(fromS, "DATASET:", 8) == 0)
 		{
+            printf("ran");
 			char* dataSet = &fromS[8];
 			// Parse data set
 			writeMatrix(dataSet);
