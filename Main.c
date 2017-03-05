@@ -144,9 +144,6 @@ void print2dArray(char **grid, int rows, int cols)
 
 int testCell(int row, int col, char **tempGrid)
 {
-    printf("row = %i col = %i\n", row, col);
-    printf("gridW = %i gridH = %i\n", gridW, gridH);
-    printf("seg\n");
 	// do neighbour count
 	if (tempGrid[row][col] == '#') {
 		if ((col == 2 && (row > 1 && row < gridH - 2)) || 
@@ -186,7 +183,6 @@ int testCell(int row, int col, char **tempGrid)
 			}
 		}
 	}
-    printf("fault\n");
 	int neighbours = 0;
 	if (tempGrid[row + 1][col - 1] == '#') 
 		neighbours++;
@@ -204,7 +200,6 @@ int testCell(int row, int col, char **tempGrid)
 		neighbours++;
 	if (tempGrid[row + 1][col] == '#')
 		neighbours++;
-    printf("fault\n");
 	return neighbours;
 }
 
@@ -231,8 +226,6 @@ void step()
 	char rimN1_1[(gridW * 2) + (gridH * 2)];
 	char rim1_1[(gridW * 2) + (gridH * 2)];
 	char rim1_N1[(gridW * 2) + (gridH * 2)];
-
-    printf("before seg\n");
 
 	// copy curent board into temp array
 	for (int row = 0; row < gridH; row++)
@@ -350,8 +343,6 @@ void step()
 		grid[gridH - 1][0] = rim1_N1[13];
 	}	
 
-    printf("before seg0\n");
-
 	print2dArray(grid, gridH, gridW);
 
 	// nt3dA logic to grid
@@ -373,8 +364,6 @@ void step()
 			}
 		}
 	}
-
-    printf("before seg1\n");    
 
 	// set grid to contents of tempGrid
 	for (int row = 0; row < gridH; row++)
