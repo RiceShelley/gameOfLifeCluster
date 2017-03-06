@@ -73,8 +73,9 @@ void deallocateMatrix(char** matrix, int height) {
 
 void send_server(int cID, char *buff, int len) 
 {
-    len += 2;
+    len += 10;
     char s_buff[len];
+    memset(s_buff, '\0', len);
     strcpy(s_buff, buff);
     strcat(s_buff, "!");
     printf("%s\n", s_buff);
