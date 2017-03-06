@@ -299,7 +299,7 @@ void step()
     // bot left corner
     grid[gridH - 1][0] = rim1_N1[gridW - 2];
 
-	print2dArray(grid, gridH, gridW);
+	//print2dArray(grid, gridH, gridW);
 
 	// nt3dA logic to grid
 	for (int row = 1; row < gridH - 1; row++)
@@ -410,6 +410,7 @@ void procControl()
 				}
 			}
 			matrix_str[i] = '\0';
+            printf("%s\n", matrix_str);
 			send(sockfd, matrix_str, strlen(matrix_str), 0);
 		}
 		/* 
