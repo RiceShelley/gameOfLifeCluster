@@ -91,7 +91,7 @@ void recv_server(int cID, char *buff, int len)
         // check for '!'
         for (int i = 0; i < b; i++) {
             if (tempBuff[i] == '!') {
-                strncat(buff, tempBuff, (i - 1));
+                strncat(buff, tempBuff, i);
                 return;
             }
         }
