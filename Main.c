@@ -71,6 +71,36 @@ void deallocateMatrix(char** matrix, int height) {
     free(matrix);
 }
 
+void send_server(int cID, char *buff, int len) 
+{
+    len += 2;
+    char s_buff[len];
+    strcpy(s_buff, buff);
+    strcat(s_buff, "!");
+    send(cID, s_buff, len, 0);
+}
+
+// read until '!' or until "len" bytes are read
+int recv_server(int cID, char *buff, int len)
+{
+    int b_read;
+    memset(buff, '\0', len);
+    while (b_read < len) {
+        char tempBuff[len];
+        int b = recv(cID, tempBuff, len, 0);
+        b_read += b;
+        // check for '!'
+        for (int i = 0; i < b; i++) {
+            if (tempBuff[i] == '!') {
+                strncat(buff, tempBuff, b);
+                return b_read;
+            }
+        }
+        strncat(buff, tempBuff, b);
+    }
+    return b_read;
+}
+
 char* getMatrixRim()
 {
 	char* rim = (char* ) malloc(((gridW * 2) + (gridH * 2) + 1));
@@ -411,7 +441,8 @@ void procControl()
 			}
 			matrix_str[i] = '\0';
             printf("%s\n", matrix_str);
-			send(sockfd, matrix_str, strlen(matrix_str), 0);
+            send_server(sockfd, matrix_str, strlen(matrix_str));
+			//send(sockfd, matrix_str, strlen(matrix_str), 0);
 		}
 		/* 
 		 * server has requested the rim of this matrix
