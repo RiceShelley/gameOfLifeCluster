@@ -370,6 +370,7 @@ void procControl()
         int fromS_ln = gridA + buff_pad;
 	    char fromS[fromS_ln];
 		recv_server(sockfd, fromS, fromS_ln);
+        printf("from server -> %s\n", fromS);
 		// Server requested node to run next step of the simulation
 		if (strncmp(fromS, "STEP", 4) == 0)
 		{
