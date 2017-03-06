@@ -25,9 +25,9 @@
 #include <errno.h>
 
 // Board dimentions <- set by server 
-int gridW = -1;
-int gridH = -1;
-int gridA = -1;
+int gridW = 5;
+int gridH = 5;
+int gridA = 25;
 
 // 2d array of chars for holding game of life board
 char** grid;
