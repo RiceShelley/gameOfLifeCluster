@@ -346,7 +346,7 @@ void procControl()
 
 	serv_def.sin_family = AF_INET;
 	serv_def.sin_port = htons(portNum);
-	inet_aton((const char*) "192.168.1.30", &serv_def.sin_addr.s_addr);
+	inet_aton((const char*) "192.168.1.174", &serv_def.sin_addr.s_addr);
 	// connect to server
 	connect(sockfd, (struct sockaddr*)&serv_def, sizeof(serv_def));
 	char fromS[1000 * 10];
