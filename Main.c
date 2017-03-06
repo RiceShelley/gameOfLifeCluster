@@ -24,9 +24,10 @@
 #include <resolv.h>
 #include <errno.h>
 
-// Board dimentions
-int gridW = 5;
-int gridH = 5;
+// Board dimentions <- set by server 
+int gridW = -1;
+int gridH = -1;
+int gridA = -1;
 
 // 2d array of chars for holding game of life board
 char** grid;
@@ -140,21 +141,6 @@ void clearGrid()
 			else
 				grid[row][col] = ' ';
 		}
-	}
-}
-
-void printGrid() 
-{
-	//system("clear");
-	for (int row = 0; row < gridH; row++)
-	{
-		for (int col = 0; col < gridW; col++)
-		{
-			if (row == 0 || row == (gridH - 1) || col == 0 || col == (gridW -1)) 
-				grid[row][col] = '*';
-			printf("%c", grid[row][col]);
-		}
-		printf("\n");
 	}
 }
 
@@ -377,23 +363,21 @@ void procControl()
 	inet_aton((const char*) "192.168.1.174", &serv_def.sin_addr.s_addr);
 	// connect to server
 	connect(sockfd, (struct sockaddr*)&serv_def, sizeof(serv_def));
-	char fromS[1000 * 10];
-	int fromSLn = (sizeof(fromS) / sizeof(char));
-	memset(fromS, '\0', fromSLn);
+    int buff_pad = 100;
 	while(true) 
 	{
-		memset(fromS, '\0', fromSLn);
-		recv_server(sockfd, fromS, fromSLn);
+        
+        int fromS_ln = gridA + buff_pad;
+	    char fromS[fromS_ln];
+		recv_server(sockfd, fromS, fromS_ln);
 		// Server requested node to run next step of the simulation
 		if (strncmp(fromS, "STEP", 4) == 0)
 		{
 			step();
-			//printGrid();
 		}
 		// Server has sent node a new matrix
 		else if (strncmp(fromS, "DATASET:", 8) == 0)
 		{
-            printf("ran");
 			char* dataSet = &fromS[8];
 			// Parse data set
 			writeMatrix(dataSet);
@@ -412,6 +396,7 @@ void procControl()
 			char* cX = &strchr(dimen, '/')[1];
 			gridH = atoi(cY);
 			gridW = atoi(cX);
+            gridA = (gridH * gridW);
             printf("new dimen h = %d, w = %d", gridH, gridW);
             // Create new grids with new dimensions
             grid = allocateMatrix(gridW, gridH);
