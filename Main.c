@@ -440,6 +440,7 @@ void procControl()
 			char* rimFormat = (char*) malloc(((int) strlen(rim)) + ((int) strlen("MATRIXRIM\0")) + 1);
 			strcpy(rimFormat, ((const char*) "MATRIXRIM"));
 			strcat(rimFormat, ((const char*) rim));
+            printf("%s\n", rimFormat);
 			send_server(sockfd, rimFormat, strlen(rimFormat));
 			free(rimFormat);
 			free(rim);
