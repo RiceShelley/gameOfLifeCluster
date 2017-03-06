@@ -77,6 +77,7 @@ void send_server(int cID, char *buff, int len)
     char s_buff[len];
     strcpy(s_buff, buff);
     strcat(s_buff, "!");
+    printf("%s\n", s_buff);
     send(cID, s_buff, len, 0);
 }
 
