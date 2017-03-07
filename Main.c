@@ -219,6 +219,7 @@ int testCell(int row, int col, char **tempGrid)
 
 void step()
 {
+    printf("inside step\n");
 	// init temp grid to equal current grid
 	char rimN1_Z[(gridW * 2) + (gridH * 2)];
 	char rim1_Z[(gridW * 2) + (gridH * 2)];
