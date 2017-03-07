@@ -239,7 +239,7 @@ void step()
 		}
     }
     // get rim of matrix above this one
-    send_server(sockfd, "GETRIMOF:-1/0\0", (sizeof("GETRIMOF:-1/0\0") / sizeof(char)));
+    send_server(sockfd, "GETRIMOF:-1/0", (sizeof("GETRIMOF:-1/0") / sizeof(char)));
     memset(rimN1_Z, 0, (sizeof(rimN1_Z) / sizeof(char)));
     recv_server(sockfd, rimN1_Z, (sizeof(rimN1_Z) / sizeof(char)));
     char bottomRow[gridW];
@@ -251,7 +251,7 @@ void step()
         grid[0][i] = bottomRow[i];
     }
     // get rim of matrix bellow this one
-    send_server(sockfd, "GETRIMOF:1/0\0", (sizeof("GETRIMOF:1/0\0") / sizeof(char)));
+    send_server(sockfd, "GETRIMOF:1/0", (sizeof("GETRIMOF:1/0") / sizeof(char)));
     memset(rim1_Z, 0, (sizeof(rim1_Z) / sizeof(char)));
     recv_server(sockfd, rim1_Z, (sizeof(rim1_Z) / sizeof(char)));
     char topRow[gridW];
@@ -262,7 +262,7 @@ void step()
         grid[gridH - 1][i] = topRow[i];
     }
     // get rim of matrix to the left of this one
-    send_server(sockfd, "GETRIMOF:0/-1\0", (sizeof("GETRIMOF:0/-1\0") / sizeof(char)));
+    send_server(sockfd, "GETRIMOF:0/-1", (sizeof("GETRIMOF:0/-1") / sizeof(char)));
     memset(rimZ_N1, 0, (sizeof(rimZ_N1) / sizeof(char)));
     recv_server(sockfd, rimZ_N1, (sizeof(rimZ_N1) / sizeof(char)));
     char rightRow[gridH];
@@ -274,7 +274,7 @@ void step()
         grid[i][0] = rightRow[i];
     }
 	// get rim of matrix to the right of this one
-    send_server(sockfd, "GETRIMOF:0/1\0", (sizeof("GETRIMOF:0/1\0") / sizeof(char)));
+    send_server(sockfd, "GETRIMOF:0/1", (sizeof("GETRIMOF:0/1") / sizeof(char)));
     memset(rimZ_1, 0, (sizeof(rimZ_1) / sizeof(char)));
     recv_server(sockfd, rimZ_1, (sizeof(rimZ_1) / sizeof(char)));
     char leftRow[gridH];
@@ -287,32 +287,34 @@ void step()
 	// Add edges of surrounding matrices to this one if need be
 
     // get rim of matrix above and the the left
-    send_server(sockfd, "GETRIMOF:-1/-1\0", (sizeof("GETRIMOF:-1/-1\0") / sizeof(char)));
+    send_server(sockfd, "GETRIMOF:-1/-1", (sizeof("GETRIMOF:-1/-1") / sizeof(char)));
     memset(rimN1_N1, 0, (sizeof(rimN1_N1) / sizeof(char)));
     recv_server(sockfd, rimN1_N1, (sizeof(rimN1_N1) / sizeof(char)));
     // top left corner
     grid[0][0] = rimN1_N1[(gridW * 2) - 2];
 
     // get rim of matrix above and to the right
-    send_server(sockfd, "GETRIMOF:-1/1\0", (sizeof("GETRIMOF:-1/1\0") / sizeof(char)));
+    send_server(sockfd, "GETRIMOF:-1/1", (sizeof("GETRIMOF:-1/1") / sizeof(char)));
     memset(rimN1_1, 0, (sizeof(rimN1_1) / sizeof(char)));
     recv_server(sockfd, rimN1_1, (sizeof(rimN1_1) / sizeof(char)));
     // top right corner
     grid[0][gridW - 1] = rimN1_1[gridW + 1];
 
     // get rim of matrix bellow and to the right
-    send_server(sockfd, "GETRIMOF:1/1\0", (sizeof("GETRIMOF:1/1\0") / sizeof(char)));
+    send_server(sockfd, "GETRIMOF:1/1", (sizeof("GETRIMOF:1/1") / sizeof(char)));
     memset(rim1_1, 0, (sizeof(rim1_1) / sizeof(char)));
     recv_server(sockfd, rim1_1, (sizeof(rim1_1) / sizeof(char)));
     // bot right corner
     grid[gridH - 1][gridW - 1] = rim1_1[1];
 
 	// get rim of matrix bellow and to the left
-    send_server(sockfd, "GETRIMOF:1/-1\0", (sizeof("GETRIMOF:1/-1\0") / sizeof(char)));
+    send_server(sockfd, "GETRIMOF:1/-1", (sizeof("GETRIMOF:1/-1") / sizeof(char)));
     memset(rim1_N1, 0, (sizeof(rim1_N1) / sizeof(char)));
     recv_server(sockfd, rim1_N1, (sizeof(rim1_N1) / sizeof(char)));
     // bot left corner
     grid[gridH - 1][0] = rim1_N1[gridW - 2];
+    
+    printf("welp\n");
 
 	//print2dArray(grid, gridH, gridW);
 
